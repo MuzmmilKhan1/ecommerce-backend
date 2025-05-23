@@ -1,5 +1,5 @@
-import prisma from '../../../../lib/prisma';
-import { authMiddleware } from '../../../../lib/auth';
+import prisma from '../../../lib/prisma';
+import { authMiddleware } from '../../../lib/auth';
 
 export default async function handler(req, res) {
   const { id } = req.query;
