@@ -1,7 +1,7 @@
 import prisma from '../../../lib/prisma';
-import { authMiddleware } from '../../../lib/auth';
+import { authMiddleware, corsMiddleware } from '../../../lib/auth';
 
-export default async function handler(req, res) {
+export default corsMiddleware(async function handler(req, res) {
   if (req.method === 'GET') {
     const products = await prisma.product.findMany();
     const productsWithBase64Images = products.map((product) => ({
@@ -34,4 +34,4 @@ export default async function handler(req, res) {
   } else {
     return res.status(405).json({ error: 'Method not allowed' });
   }
-}
+})

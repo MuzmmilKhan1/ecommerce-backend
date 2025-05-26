@@ -1,7 +1,7 @@
 import prisma from '../../../lib/prisma';
-import { authMiddleware } from '../../../lib/auth';
+import { authMiddleware, corsMiddleware } from '../../../lib/auth';
 
-export default authMiddleware(async function handler(req, res) {
+export default corsMiddleware(authMiddleware(async function handler(req, res) {
   const { id } = req.query;
 
   if (req.method === 'GET') {
@@ -33,4 +33,4 @@ export default authMiddleware(async function handler(req, res) {
   }
 
   return res.status(405).json({ error: 'Method not allowed' });
-});
+}));

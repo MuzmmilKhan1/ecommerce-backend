@@ -31,8 +31,14 @@ export default function AdminCategories() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try{
+    let imageUrl = '';
+    if (form.image) {
+      imageUrl = await uploadImage(form.image, 'images', 'products');
+    }
     const method = editingId ? 'PUT' : 'POST';
     const url = editingId ? `/api/categories/${editingId}` : '/api/categories';
+    setForm({...form, image: imageUrl })
     await fetch(url, {
       method,
       headers: {
@@ -44,6 +50,9 @@ export default function AdminCategories() {
     fetchCategories();
     setForm({ title: '', description: '', image: null });
     setEditingId(null);
+  }catch (err) {
+    alert(err.message)
+  }
   };
 
   const handleEdit = (category) => {

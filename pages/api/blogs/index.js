@@ -1,7 +1,7 @@
 import prisma from '../../../lib/prisma';
-import { authMiddleware } from '../../../lib/auth';
+import { authMiddleware, corsMiddleware } from '../../../lib/auth';
 
-export default async function handler(req, res) {
+export default corsMiddleware(async function handler(req, res) {
   if (req.method === 'GET') {
     const blogs = await prisma.blog.findMany();
     const blogsWithBase64Images = blogs.map((blog) => ({
@@ -36,4 +36,4 @@ export default async function handler(req, res) {
 
   return res.status(405).json({ error: 'Method not allowed' });
   })(req,res)
-};
+})

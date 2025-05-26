@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import AdminLayout from '../../components/AdminLayout';
 import QuillEditor from '../../components/QuillEditor';
 import parse from 'html-react-parser';
+import { uploadImage } from '@/lib/supabase';
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -41,8 +42,14 @@ export default function AdminProducts() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try{
+    let imageUrl = '';
+    if (form.image) {
+      imageUrl = await uploadImage(form.image, 'images', 'products');
+    }
     const method = editingId ? 'PUT' : 'POST';
     const url = editingId ? `/api/products/${editingId}` : '/api/products';
+    setForm({...form, image: imageUrl })
     await fetch(url, {
       method,
       headers: {
@@ -58,6 +65,9 @@ export default function AdminProducts() {
     fetchProducts();
     setForm({ name: '', description: '', price: '', image: null, rating: '', category: '', isNew: false });
     setEditingId(null);
+    }catch (err) {
+      alert(err.message)
+    }
   };
 
   const handleEdit = (product) => {

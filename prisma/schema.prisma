@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./prisma/dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Product {
@@ -12,20 +12,20 @@ model Product {
   name        String
   description String
   price       Float
-  image       Bytes?
+  image       String?
   rating      Float
   category    String
   isNew       Boolean
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  orderItems  OrderItem[]  // Added opposite relation for OrderItem
+  orderItems  OrderItem[]  // Relation to OrderItem
 }
 
 model Category {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  image       Bytes?
+  image       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -34,7 +34,7 @@ model Blog {
   id          Int      @id @default(autoincrement())
   title       String
   excerpt     String
-  image       Bytes?
+  image       String?
   category    String
   author      String
   date        String
@@ -59,7 +59,7 @@ model User {
   role      String   @default("user")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  orders    Order[]  // Added opposite relation for Order
+  orders    Order[]  // Relation to Order
 }
 
 model Order {
