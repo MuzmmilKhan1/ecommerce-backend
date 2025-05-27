@@ -1,11 +1,9 @@
-require('dotenv').config({ path: '/mnt/c/Users/muzmm/OneDrive/Desktop/Hamad Project/ecommerce-backend/.env' });
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
 
 async function seed() {
-  console.log('DATABASE_URL:', process.env.DATABASE_URL);
   // Seed Products
   await prisma.product.createMany({
     data: [
